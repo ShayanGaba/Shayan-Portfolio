@@ -89,9 +89,8 @@ export const projects = [
     name: "Fine Cuts Gents Salon",
     description:
       "A professional landing page for Abu Dhabi's premier men's grooming salon, featuring service showcases, booking information, and responsive design optimized for mobile and desktop users seeking premium barbering services.",
-    href: "https://finecutsmen.vercel.app/",
-    github: "https://github.com/ShayanGaba",
-    status: "Repository Coming Soon",
+    href: "https://finecuts-salon.vercel.app/",
+    github: "https://github.com/ShayanGaba/Finecuts-salon",
     image: "/assets/projects/finecuts.png",
     // bgImage: "/assets/backgrounds/finecuts.png",
     frameworks: [
@@ -106,8 +105,7 @@ export const projects = [
     description:
       "A modern web application for automotive detailing services, showcasing service packages, pricing, and booking functionality. Built with a focus on visual appeal and user-friendly navigation for car enthusiasts.",
     href: "https://detailing-crew.vercel.app/",
-    github: "https://github.com/ShayanGaba",
-    status: "Repository Coming Soon",
+    github: "https://github.com/ShayanGaba/Detailing-Crew-Islamabad",
     image: "/assets/projects/detailing-crew.png",
     // bgImage: "/assets/backgrounds/detailing-crew.png",
     frameworks: [

@@ -1,6 +1,6 @@
 # Shayan Gaba - Portfolio
 
-A modern, high-performance portfolio website showcasing my work as a Full Stack Developer. Built with React, GSAP animations, and Three.js for an immersive user experience.
+A modern, high-performance portfolio website showcasing my work as a Web Developer. Built with React, GSAP animations, and Three.js for an immersive user experience.
 
 ## Tech Stack
 

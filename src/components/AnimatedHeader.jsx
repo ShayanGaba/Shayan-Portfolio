@@ -51,7 +51,7 @@ export const AnimatedHeader = ({
 
   return (
     <div ref={contextRef} aria-labelledby="header-title">
-      <div style={{ clipPath: "polygon(0 0, 100% 0, 100% 100% 0 100%)" }}>
+      <div style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}>
         <div
           ref={headerRef}
           className="flex flex-col justify-center gap-12 pt-16 sm:gap-16"

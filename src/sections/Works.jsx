@@ -15,7 +15,7 @@ export const Works = () => {
   const moveX = useRef(null);
   const moveY = useRef(null);
   const mouse = useRef({ x: 0, y: 0 });
-  const text = `From interactive React applications to
+  const text = `From interactive Web applications to
     AI-powered features. Each project reflects
     my commitment to clean code and thoughtful
     design, built with attention to performance,

@@ -12,7 +12,7 @@ export const About = () => {
     I develop React interfaces and AI-powered
      features that solve real problems,
       not theoretical ones.`;
-  const aboutText = `Frontend developer specializing in React and AI integration. I build applications that combine clean, performant interfaces with intelligent features—from GSAP-animated experiences to LangChain-powered workflows. Beyond personal projects, I help businesses establish their digital presence across any industry. My focus is simple: create digital products that users love and businesses need. Every project balances aesthetic design with technical excellence, ensuring fast load times, smooth interactions, and scalable architecture.`;
+  const aboutText = `Frontend developer who builds clean, performant React interfaces and AI-powered features — from GSAP-animated experiences to LangChain-powered workflows. Beyond personal projects, I help businesses establish their digital presence across any industry. Every project balances aesthetic design with technical excellence, ensuring fast load times, smooth interactions, and scalable architecture.`;
 
   const imgRef = useRef(null);
   const sectionRef = useRef(null);

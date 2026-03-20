@@ -21,13 +21,12 @@ export const Hero = () => {
         title={"Shayan Gaba"}
         text={text}
         textColor={"text-black"}
-        className="hover:scale-105 transition-transform duration-500"
       />
       <figure
         className="absolute inset-0 -z-50"
         style={{ width: "100vw", height: "100vh" }}
         role="img"
-        aria-label="Interactive 3D planet scene representing innovation and web development"
+        aria-label="Interactive 3D planet scene"
       >
         <Canvas
           shadows

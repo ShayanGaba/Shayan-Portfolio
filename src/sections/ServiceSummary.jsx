@@ -36,7 +36,7 @@ export const ServiceSummary = () => {
   });
 
   return (
-    <section className="mt-20 overflow-hidden font-light leading-snug text-center contact-text-responsive mb-42">
+    <section className="mt-20 overflow-hidden font-light leading-snug text-center contact-text-responsive mb-42 bg-primary">
       <div id="title-service-1" className="mb-4">
         <p>Creativity</p>
       </div>

@@ -13,30 +13,38 @@ import { useEffect, useState } from "react";
 export const App = () => {
   const { progress } = useProgress();
   const [isReady, setIsReady] = useState(false);
+  const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
     if (progress === 100) {
-      setIsReady(true);
+      setTimeout(() => setFadeOut(true), 300);
+      setTimeout(() => setIsReady(true), 1000);
     }
   }, [progress]);
 
   return (
-    <ReactLenis root className="relative w-screen min-h-screen overflow-x-auto">
+    <ReactLenis
+      root
+      className="relative w-screen min-h-screen overflow-x-hidden"
+    >
       {!isReady && (
         <div
-          className="fixed inset-0 z-[999] flex flex-col items-center justify-center bg-black text-white transition-opacity duration-700 font-light"
+          className={`fixed inset-0 z-[999] flex flex-col items-center justify-center bg-black text-white font-light transition-opacity duration-700 ${fadeOut ? "opacity-0" : "opacity-100"}`}
           aria-live="polite"
           aria-label="Loading portfolio content"
         >
-          <p className="mb-4 text-xl tracking-widest animate-pulse">
-            Loading {Math.floor(progress)}%
+          <p className="mb-8 text-2xl tracking-[0.5rem] uppercase">
+            Shayan Gaba
           </p>
-          <div className="relative h-1 overflow-hidden rounded w-60 bg-white/20">
+          <div className="relative h-px overflow-hidden w-60 bg-white/20">
             <div
               className="absolute top-0 left-0 h-full transition-all duration-300 bg-white"
               style={{ width: `${progress}%` }}
-            ></div>
+            />
           </div>
+          <p className="mt-4 text-xs tracking-widest text-white/40">
+            {Math.floor(progress)}%
+          </p>
         </div>
       )}
       <div

@@ -16,6 +16,15 @@ export const App = () => {
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
+    const fallback = setTimeout(() => {
+      setFadeOut(true);
+      setTimeout(() => setIsReady(true), 700);
+    }, 5000);
+
+    return () => clearTimeout(fallback);
+  }, []);
+
+  useEffect(() => {
     if (progress === 100) {
       setTimeout(() => setFadeOut(true), 300);
       setTimeout(() => setIsReady(true), 1000);

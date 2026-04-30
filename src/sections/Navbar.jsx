@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { socials } from "../constants";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { Link } from "react-scroll";
+// import { Link } from "react-scroll";
 
 export const Navbar = () => {
   const navRef = useRef(null);
@@ -137,7 +137,7 @@ export const Navbar = () => {
           {["home", "services", "about", "work", "contact"].map(
             (section, index) => (
               <div key={section} ref={(el) => (linksRef.current[index] = el)}>
-                <Link
+                {/* <Link
                   className="block
                   text-[9vw] xs:text-[8vw] sm:text-5xl md:text-6xl lg:text-7xl
                   font-light tracking-tight leading-tight
@@ -154,7 +154,7 @@ export const Navbar = () => {
                   aria-label={`Navigate to ${section} section`}
                 >
                   {section}
-                </Link>
+                </Link> */}
                 <div className="w-full h-px bg-white/10 mt-1" />
               </div>
             ),

@@ -22,7 +22,7 @@ A modern, high-performance portfolio website showcasing my work as a Web Develop
 
 - **Fine Cuts Gents Salon** - Business website for Abu Dhabi salon
 - **Detailing Crew** - Car care services web app
-- **Curated Gifts** - Corporate gifting platform (In Progress)
+- **Krystal** - AI Powered Corporate gifting platform (In Progress)
 - **Agentic AI System** - Multi-agent AI platform (In Progress)
 - **Quizora** - Interactive quiz application
 - **Pokédex** - Pokemon encyclopedia with PokeAPI
@@ -31,7 +31,7 @@ A modern, high-performance portfolio website showcasing my work as a Web Develop
 ## Contact
 
 - Email: shayangaba953@gmail.com
-- LinkedIn: linkedin.com/in/shayan-gaba-2622ba302
+- LinkedIn: linkedin.com/in/shayangaba
 - GitHub: github.com/ShayanGaba
 
 ## License

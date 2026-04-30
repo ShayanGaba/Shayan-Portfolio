@@ -1,70 +1,62 @@
 import { useRef } from "react";
 import { Marquee } from "../components/Marquee";
 import { useGSAP } from "@gsap/react";
+import { useMediaQuery } from "react-responsive";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const MARQUEE_ITEMS = [
+  "Fast Delivery",
+  "Clean Architecture",
+  "User-Focused",
+  "AI-Powered",
+  "Production-Ready",
+];
+
+const MARQUEE_ITEMS_2 = [
+  "Let's Connect",
+  "Let's Connect",
+  "Let's Connect",
+  "Let's Connect",
+  "Let's Connect",
+];
+
 export const ContactSummary = () => {
   const containerRef = useRef(null);
   const textRef = useRef(null);
-  const items = [
-    "Fast Delivery",
-    "Clean Architecture",
-    "User-Focused",
-    "AI-Powered",
-    "Production-Ready",
-  ];
-  const items2 = [
-    "Let's Connect",
-    "Let's Connect",
-    "Let's Connect",
-    "Let's Connect",
-    "Let's Connect",
-  ];
 
-  const prefersReducedMotion =
-    typeof window !== "undefined"
-      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      : false;
+  const prefersReducedMotion = useMediaQuery({
+    query: "(prefers-reduced-motion: reduce)",
+  });
 
   useGSAP(() => {
     if (prefersReducedMotion) return;
 
-    const tween = gsap.to(containerRef.current, {
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "center center",
-        end: "+=400 center",
-        scrub: 0.5,
-        pin: true,
-        pinSpacing: true,
-        markers: false,
-        invalidateOnRefresh: true,
-        fastScrollEnd: true,
-      },
-      willChange: "transform",
-    });
-
-    gsap.fromTo(
+    const textTween = gsap.fromTo(
       textRef.current,
-      { opacity: 0, y: 50 },
+      { opacity: 0, y: 60 },
       {
         opacity: 1,
         y: 0,
         duration: 1.5,
         ease: "power2.out",
+        onComplete: () => {
+          if (textRef.current) textRef.current.style.willChange = "auto";
+        },
         scrollTrigger: {
           trigger: textRef.current,
           start: "top 80%",
+          invalidateOnRefresh: true,
+          fastScrollEnd: true,
         },
         willChange: "opacity, transform",
       },
     );
 
     return () => {
-      tween.scrollTrigger?.kill();
+      textTween.scrollTrigger?.kill();
     };
   }, [prefersReducedMotion]);
 
@@ -75,9 +67,10 @@ export const ContactSummary = () => {
       aria-labelledby="summary-title"
     >
       <Marquee
-        items={items}
-        className="hover:scale-105 transition-transform duration-300 bg-black text-white"
+        items={MARQUEE_ITEMS}
+        className="transition-transform duration-300 bg-black text-white"
       />
+
       <div
         ref={textRef}
         className="overflow-hidden font-light text-center contact-text-responsive"
@@ -90,8 +83,9 @@ export const ContactSummary = () => {
           <span className="text-gold drop-shadow-lg">together</span> "
         </p>
       </div>
+
       <Marquee
-        items={items2}
+        items={MARQUEE_ITEMS_2}
         reverse={true}
         className="text-black bg-transparent border-y-2 hover:border-gold/50 transition-colors duration-300"
         iconClassName="stroke-gold stroke-2 text-primary"

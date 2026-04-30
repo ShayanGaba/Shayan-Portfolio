@@ -7,7 +7,7 @@ export function Planet(props) {
   const shapeContainer = useRef(null);
   const sphereContainer = useRef(null);
   const ringContainer = useRef(null);
-  const { nodes, materials } = useGLTF("/models/Planet.glb");
+  const { nodes, materials } = useGLTF("/models/Planet-opt.glb");
 
   const prefersReducedMotion =
     typeof window !== "undefined"
@@ -84,4 +84,7 @@ export function Planet(props) {
   );
 }
 
-useGLTF.preload("/models/Planet.glb");
+useGLTF.setDecoderPath(
+  "https://www.gstatic.com/draco/versioned/decoders/1.5.6/",
+);
+useGLTF.preload("/models/Planet-opt.glb");

@@ -1,6 +1,7 @@
 export const servicesData = [
   {
     title: "Frontend Development",
+    price: "Starting from $80",
     description:
       "Transform designs into pixel-perfect, interactive web experiences. I build responsive applications with React, implement smooth animations with GSAP, and ensure flawless performance across all devices—delivering interfaces that users love to interact with.",
     items: [
@@ -23,6 +24,7 @@ export const servicesData = [
   },
   {
     title: "Business Website Development",
+    price: "Starting from $80",
     description:
       "Help local businesses and startups establish their digital presence. I create professional, conversion-focused websites tailored to any industry—from salons and auto detailing to corporate gifting and retail. Fast turnaround, modern design, and built to drive real business results.",
     items: [
@@ -43,6 +45,7 @@ export const servicesData = [
   },
   {
     title: "Web Development & Deployment",
+    price: "Starting from $50",
     description:
       "Take your projects from code to live production. I handle complete deployment workflows on Vercel and Netlify, optimize performance for Lighthouse 90+ scores, and ensure your application runs smoothly with proper version control and CI/CD practices.",
     items: [
@@ -63,6 +66,7 @@ export const servicesData = [
   },
   {
     title: "AI Integration & Automation",
+    price: "Starting from $120",
     description:
       "Bring intelligence to your applications with cutting-edge AI capabilities. I integrate pre-trained models, implement LangChain workflows, and build automated systems using Python—transforming raw data into actionable insights and smart automation.",
     items: [
@@ -116,23 +120,24 @@ export const projects = [
   },
   {
     id: 3,
-    name: "Curated Gifts - Corporate Gifting Platform (In Process)",
+    name: "Krystal - AI Powered Corporate Gifting Platform",
     description:
-      "A professional e-commerce platform specializing in premium corporate gifts and custom hampers. Features product showcasing, category filtering, and business inquiry systems designed to help companies find the perfect gifts for clients and employees.",
-    href: "https://curated-gifts.vercel.app/",
-    github: "https://github.com/ShayanGaba",
+      "Krystal is a full-stack React/TypeScript web application for luxury corporate gifting. It features an AI gift matching engine, a curated product catalogue, cart and wishlist management, and a WhatsApp-first ordering flow designed for the Pakistani market.",
+    href: "https://krystal-gifting.vercel.app/",
+    github: "https://github.com/ShayanGaba/krystal-gifting",
     status: "In Progress",
-    image: "/assets/projects/curatedgifts.png",
-    // bgImage: "/assets/backgrounds/curatedgits.png",
+    image: "/assets/projects/krystal-gifting.png",
+    // bgImage: "/assets/backgrounds/krystal-gifting.png",
     frameworks: [
       { id: 1, name: "React" },
       { id: 2, name: "Tailwind CSS" },
-      { id: 3, name: "Vercel" },
+      { id: 3, name: "Framer Motion" },
+      { id: 4, name: "Vercel" },
     ],
   },
   {
     id: 4,
-    name: "Agentic AI System - Multi-Agent Platform (In Process)",
+    name: "Agentic AI System - Multi-Agent Platform",
     description:
       "An intelligent multi-agent system built with Python, LangChain, and PyTorch. Features tool-using agents, vector database integration with ChromaDB, and NLP capabilities for automated workflows and decision-making processes.",
     href: "",
@@ -222,7 +227,7 @@ export const socials = [
   },
   {
     name: "LinkedIn",
-    href: "https://www.linkedin.com/in/shayan-gaba-2622ba302/",
+    href: "https://www.linkedin.com/in/shayangaba/",
   },
   {
     name: "Instagram",

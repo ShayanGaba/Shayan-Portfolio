@@ -14,14 +14,27 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
+    assetsInlineLimit: 4096,
     rollupOptions: {
       output: {
         manualChunks: {
           three: ["three"],
           fiber: ["@react-three/fiber"],
           drei: ["@react-three/drei"],
+          gsap: ["gsap"],
+          lenis: ["lenis"],
+          vendor: [
+            "react",
+            "react-dom",
+            "react-responsive",
+            "react-scroll",
+            "@iconify/react",
+          ],
         },
       },
     },
+  },
+  server: {
+    compress: true,
   },
 });

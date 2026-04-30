@@ -1,72 +1,68 @@
 import ReactLenis from "lenis/react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Hero } from "./sections/Hero";
 import { Navbar } from "./sections/Navbar";
-import { Services } from "./sections/Services";
-import { ServiceSummary } from "./sections/ServiceSummary";
-import { About } from "./sections/About";
-import { Works } from "./sections/Works";
-import { ContactSummary } from "./sections/ContactSummary";
-import { Contact } from "./sections/Contact";
-import { useProgress } from "@react-three/drei";
-import { useEffect, useState } from "react";
+import { LoadingScreen } from "./components/LoadingScreen";
+import { CustomCursor } from "./components/CustomCursor";
+
+const ServiceSummary = lazy(() =>
+  import("./sections/ServiceSummary").then((m) => ({
+    default: m.ServiceSummary,
+  })),
+);
+const Services = lazy(() =>
+  import("./sections/Services").then((m) => ({ default: m.Services })),
+);
+const About = lazy(() =>
+  import("./sections/About").then((m) => ({ default: m.About })),
+);
+const Works = lazy(() =>
+  import("./sections/Works").then((m) => ({ default: m.Works })),
+);
+const ContactSummary = lazy(() =>
+  import("./sections/ContactSummary").then((m) => ({
+    default: m.ContactSummary,
+  })),
+);
+const Contact = lazy(() =>
+  import("./sections/Contact").then((m) => ({ default: m.Contact })),
+);
 
 export const App = () => {
-  const { progress } = useProgress();
   const [isReady, setIsReady] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    const fallback = setTimeout(() => {
-      setFadeOut(true);
-      setTimeout(() => setIsReady(true), 700);
-    }, 5000);
-
-    return () => clearTimeout(fallback);
+    const t1 = setTimeout(() => setFadeOut(true), 2000);
+    const t2 = setTimeout(() => setIsReady(true), 2700);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
   }, []);
-
-  useEffect(() => {
-    if (progress === 100) {
-      setTimeout(() => setFadeOut(true), 300);
-      setTimeout(() => setIsReady(true), 1000);
-    }
-  }, [progress]);
 
   return (
     <ReactLenis
       root
       className="relative w-screen min-h-screen overflow-x-hidden"
     >
-      {!isReady && (
-        <div
-          className={`fixed inset-0 z-[999] flex flex-col items-center justify-center bg-black text-white font-light transition-opacity duration-700 ${fadeOut ? "opacity-0" : "opacity-100"}`}
-          aria-live="polite"
-          aria-label="Loading portfolio content"
-        >
-          <p className="mb-8 text-2xl tracking-[0.5rem] uppercase">
-            Shayan Gaba
-          </p>
-          <div className="relative h-px overflow-hidden w-60 bg-white/20">
-            <div
-              className="absolute top-0 left-0 h-full transition-all duration-300 bg-white"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-          <p className="mt-4 text-xs tracking-widest text-white/40">
-            {Math.floor(progress)}%
-          </p>
-        </div>
-      )}
+      <CustomCursor />
+
+      {!isReady && <LoadingScreen fadeOut={fadeOut} />}
+
       <div
-        className={`${isReady ? "opacity-100" : "opacity-0"} transition-opacity duration-1000`}
+        className={`${isReady ? "opacity-100" : "opacity-0"} transition-opacity duration-500`}
       >
         <Navbar />
         <Hero />
-        <ServiceSummary />
-        <Services />
-        <About />
-        <Works />
-        <ContactSummary />
-        <Contact />
+        <Suspense fallback={null}>
+          <ServiceSummary />
+          <Services />
+          <About />
+          <Works />
+          <ContactSummary />
+          <Contact />
+        </Suspense>
       </div>
     </ReactLenis>
   );

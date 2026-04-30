@@ -1,10 +1,10 @@
 import { useRef } from "react";
 import { AnimatedHeader } from "../components/AnimatedHeader";
 import { servicesData } from "../constants";
-import { useMediaQuery } from "react-responsive";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useMediaQuery } from "react-responsive";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,42 +13,42 @@ export const Services = () => {
     I craft React experiences, business websites,
      and intelligent capabilities to maximize 
      impact, not confusion.`;
-  const serviceRef = useRef([]);
-  const isDesktop = useMediaQuery({ minWidth: "48rem" }); 
 
-  
-  const prefersReducedMotion =
-    typeof window !== "undefined"
-      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      : false;
+  const serviceRef = useRef([]);
+  const prefersReducedMotion = useMediaQuery({
+    query: "(prefers-reduced-motion: reduce)",
+  });
 
   useGSAP(() => {
-    serviceRef.current.forEach((el) => {
-      if (!el) return;
+    serviceRef.current = serviceRef.current.filter(Boolean);
 
-      const tween = gsap.from(el, {
-        y: prefersReducedMotion ? 0 : 200, 
-        scrollTrigger: {
-          trigger: el,
-          start: "top 80%",
-        },
+    const tweens = serviceRef.current.map((el) => {
+      if (!el) return null;
+      return gsap.from(el, {
+        y: prefersReducedMotion ? 0 : 200,
+        scrollTrigger: { trigger: el, start: "top 80%" },
         duration: 1,
         ease: "circ.out",
-        willChange: "transform", 
+        willChange: "transform",
+        onComplete: () => {
+          el.style.willChange = "auto";
+        },
       });
-
-      
-      return () => {
-        tween.scrollTrigger?.kill();
-      };
     });
+
+    return () => {
+      tweens.forEach((t) => t?.scrollTrigger?.kill());
+    };
   }, [prefersReducedMotion]);
+
+  const TOP_BASE = "8vh";
+  const STAGGER = 4; 
 
   return (
     <section
       id="services"
       className="min-h-screen bg-black rounded-t-4xl"
-      aria-labelledby="services-title" 
+      aria-labelledby="services-title"
       role="region"
     >
       <AnimatedHeader
@@ -58,36 +58,51 @@ export const Services = () => {
         textColor={"text-white"}
         withScrollTrigger={true}
       />
-      {servicesData.map((service, index) => (
-        <div
-          ref={(el) => (serviceRef.current[index] = el)}
-          key={index}
-          className="sticky px-6 sm:px-10 pt-6 pb-12 text-white bg-gradient-to-b from-black to-black/95 border-t-2 border-white/30 shadow-lg" 
-          style={
-            isDesktop
-              ? {
-                  top: `calc(10vh + ${index * 5}rem)`,
-                  marginBottom: `${(servicesData.length - index - 1) * 5}rem`,
-                }
-              : { top: 0 } 
-          }
-        >
-          <div className="flex items-center justify-between gap-4 font-light">
-            <div className="flex flex-col gap-6 w-full">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl hover:text-white/90 transition-colors duration-300 hover:scale-105">
-                {" "}
+
+      {servicesData.map((service, index) => {
+        const remaining = servicesData.length - index - 1;
+
+        return (
+          <div
+            key={service.id ?? service.title ?? index}
+            ref={(el) => {
+              serviceRef.current[index] = el;
+            }}
+            className="px-6 sm:px-10 py-10 text-white bg-gradient-to-b from-black to-black/95 border-t-2 border-white/30 shadow-lg"
+            style={{
+              position: "sticky",
+              top: `calc(${TOP_BASE} + ${index * STAGGER}rem)`,
+              marginBottom: remaining > 0 ? `${remaining * STAGGER}rem` : 0,
+              minHeight: `calc(100vh - ${TOP_BASE} - ${index * STAGGER}rem)`,
+              zIndex: index + 1,
+            }}
+          >
+            <div className="flex flex-col gap-6 font-light w-full">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-light tracking-[0.3rem] text-white/25 uppercase">
+                  0{index + 1}
+                </span>
+                {service.price && (
+                  <span className="text-[10px] sm:text-xs font-light tracking-[0.2rem] uppercase text-white/30 border border-white/10 px-3 py-1">
+                    {service.price}
+                  </span>
+                )}
+              </div>
+
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl hover:text-white/90 transition-colors duration-300">
                 {service.title}
               </h2>
-              <p className="text-lg sm:text-xl leading-relaxed tracking-widest lg:text-2xl text-white/60 text-pretty">
+
+              <p className="text-base sm:text-lg leading-relaxed tracking-wide lg:text-xl text-white/50 text-pretty max-w-2xl">
                 {service.description}
               </p>
-              <div className="flex flex-col gap-2 text-xl sm:text-2xl sm:gap-4 lg:text-3xl text-white/80">
+
+              <div className="flex flex-col text-xl sm:text-2xl sm:gap-4 lg:text-3xl text-white/80">
                 {service.items.map((item, itemIndex) => (
                   <div
-                    key={`item-${index}-${itemIndex}`}
+                    key={`item-${service.id ?? service.title ?? index}-${item.title ?? itemIndex}`}
                     className="hover:bg-white/5 rounded-lg p-2 transition-all duration-300"
                   >
-                    {" "}
                     <h3 className="flex items-center">
                       <span className="mr-8 sm:mr-12 text-base sm:text-lg text-white/30">
                         0{itemIndex + 1}
@@ -100,10 +115,28 @@ export const Services = () => {
                   </div>
                 ))}
               </div>
+
+              <button
+                onClick={() =>
+                  document.getElementById("contact")?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  })
+                }
+                className="group relative w-fit flex items-center gap-3 px-6 py-3 mt-4 text-xs font-light tracking-[0.2rem] uppercase text-white border border-white/20 overflow-hidden transition-all duration-300 hover:border-white"
+              >
+                <span className="relative z-10 transition-colors duration-300 group-hover:text-black">
+                  Get a Quote
+                </span>
+                <span className="relative z-10 transition-all duration-300 group-hover:translate-x-1 group-hover:text-black">
+                  →
+                </span>
+                <span className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
+              </button>
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </section>
   );
 };

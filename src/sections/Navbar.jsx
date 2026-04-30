@@ -23,6 +23,7 @@ export const Navbar = () => {
   useGSAP(() => {
     gsap.set(navRef.current, { xPercent: 100 });
     gsap.set([linksRef.current, contactsRef.current], { autoAlpha: 0, x: -20 });
+
     tl.current = gsap
       .timeline({ paused: true })
       .to(navRef.current, {
@@ -52,6 +53,7 @@ export const Navbar = () => {
         },
         "<+0.2",
       );
+
     iconTL.current = gsap
       .timeline({ paused: true })
       .to(topLineRef.current, {
@@ -88,6 +90,14 @@ export const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === "Escape" && isOpen) toggleMenu();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [isOpen]);
+
   const toggleMenu = () => {
     if (isOpen) {
       tl.current.reverse();
@@ -96,24 +106,47 @@ export const Navbar = () => {
       tl.current.play();
       iconTL.current.play();
     }
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
   };
 
   return (
     <>
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-[9998] bg-black/30 backdrop-blur-[2px]"
+          onClick={toggleMenu}
+          aria-hidden="true"
+        />
+      )}
+
       <nav
         ref={navRef}
-        className="fixed z-50 flex flex-col justify-between w-3/4 right-0 h-full px-10 uppercase bg-gradient-to-b from-black to-black/95 text-white/80 py-28 gap-y-8 md:w-1/2 md:left-1/2 md:right-auto shadow-2xl"
-        aria-labelledby="nav-menu"
+        className="fixed z-[9999] flex flex-col justify-between
+          w-[85vw] xs:w-3/4 sm:w-[55vw] md:w-[45vw] lg:w-[38vw] xl:w-[32vw]
+          right-0 h-full
+          px-6 sm:px-8 md:px-10
+          pt-20 pb-10
+          uppercase bg-gradient-to-b from-black to-black/95
+          text-white/80
+          shadow-2xl
+          overflow-y-auto"
+        aria-label="Main navigation"
         role="navigation"
       >
-        <div className="flex flex-col text-4xl gap-y-2 sm:text-5xl md:text-6xl lg:text-8xl">
+        <div className="flex flex-col gap-y-1">
           {["home", "services", "about", "work", "contact"].map(
             (section, index) => (
-              <div key={index} ref={(el) => (linksRef.current[index] = el)}>
+              <div key={section} ref={(el) => (linksRef.current[index] = el)}>
                 <Link
-                  className="transition-all duration-300 cursor-pointer hover:text-white hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-sm"
-                  to={`${section}`}
+                  className="block
+                  text-[9vw] xs:text-[8vw] sm:text-5xl md:text-6xl lg:text-7xl
+                  font-light tracking-tight leading-tight
+                  transition-all duration-300
+                  cursor-pointer
+                  hover:text-white hover:translate-x-2
+                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-sm
+                  py-1"
+                  to={section}
                   smooth
                   offset={0}
                   duration={2000}
@@ -122,30 +155,44 @@ export const Navbar = () => {
                 >
                   {section}
                 </Link>
+                <div className="w-full h-px bg-white/10 mt-1" />
               </div>
             ),
           )}
         </div>
+
         <div
           ref={contactsRef}
-          className="flex flex-col flex-wrap justify-between gap-6 md:gap-8 md:flex-row"
+          className="flex flex-col gap-5 mt-8 pt-6 border-t border-white/10"
         >
           <div className="font-light">
-            <p className="tracking-wider text-white/50">E-mail</p>
-            <p className="text-lg sm:text-xl tracking-widest lowercase text-pretty">
-              shayangaba953@gmail.com
+            <p className="text-[10px] tracking-[0.2rem] text-white/40 mb-1">
+              E-MAIL
             </p>
+            <a
+              href="mailto:shayangaba953@gmail.com"
+              className="text-sm sm:text-base tracking-wider lowercase text-white/80
+                hover:text-white transition-colors duration-300
+                underline decoration-transparent hover:decoration-white/30 underline-offset-4"
+            >
+              shayangaba953@gmail.com
+            </a>
           </div>
+
           <div className="font-light">
-            <p className="tracking-wider text-white/50">Social Media</p>
-            <div className="flex flex-col flex-wrap md:flex-row gap-x-2 gap-y-1">
-              {socials.map((social, index) => (
+            <p className="text-[10px] tracking-[0.2rem] text-white/40 mb-2">
+              SOCIALS
+            </p>
+            <div className="flex flex-wrap gap-x-3 gap-y-2">
+              {socials.map((social) => (
                 <a
-                  key={index}
+                  key={social.name}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm leading-loose tracking-widest uppercase hover:text-white hover:scale-105 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-sm px-1"
+                  className="text-xs tracking-widest uppercase text-white/50
+                    hover:text-white transition-all duration-300
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-sm px-1"
                   aria-label={`Visit ${social.name} profile`}
                 >
                   {social.name}
@@ -153,10 +200,26 @@ export const Navbar = () => {
               ))}
             </div>
           </div>
+
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500" />
+            </span>
+            <span className="text-[10px] tracking-[0.15rem] uppercase text-white/30">
+              Available for work
+            </span>
+          </div>
         </div>
       </nav>
+
       <div
-        className={`fixed z-50 flex flex-col items-center justify-center gap-1 transition-all duration-300 bg-black rounded-full cursor-pointer w-14 h-14 md:w-20 md:h-20 top-4 right-4 md:right-10 ${isOpen ? "opacity-100" : ""}`}
+        className={`fixed z-[99998] flex flex-col items-center justify-center gap-[5px]
+          transition-all duration-300
+          bg-black rounded-full
+          w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16
+          top-4 right-4 md:top-6 md:right-8
+          ${isOpen ? "opacity-100" : ""}`}
         onClick={toggleMenu}
         style={
           showBurger || isOpen
@@ -173,12 +236,12 @@ export const Navbar = () => {
       >
         <span
           ref={topLineRef}
-          className="block w-8 h-0.5 bg-white rounded-full origin-center"
-        ></span>
+          className="block w-5 sm:w-6 h-0.5 bg-white rounded-full origin-center"
+        />
         <span
           ref={bottomLineRef}
-          className="block w-8 h-0.5 bg-white rounded-full origin-center"
-        ></span>
+          className="block w-5 sm:w-6 h-0.5 bg-white rounded-full origin-center"
+        />
       </div>
     </>
   );

@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { socials } from "../constants";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-// import { Link } from "react-scroll";
 
 export const Navbar = () => {
   const navRef = useRef(null);
@@ -19,6 +18,26 @@ export const Navbar = () => {
     typeof window !== "undefined"
       ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
       : false;
+
+  // Slow animated scroll — same feel as react-scroll duration={2000}
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (!element) return;
+
+    if (prefersReducedMotion) {
+      element.scrollIntoView({ behavior: "auto", block: "start" });
+    } else if (window.lenis) {
+      window.lenis.scrollTo(element, {
+        offset: 0,
+        duration: 2, // 2 seconds — same as your old duration={2000}
+        easing: (t) => 1 - Math.pow(1 - t, 3), // smooth ease-out cubic
+      });
+    } else {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    toggleMenu();
+  };
 
   useGSAP(() => {
     gsap.set(navRef.current, { xPercent: 100 });
@@ -109,6 +128,14 @@ export const Navbar = () => {
     setIsOpen((prev) => !prev);
   };
 
+  const navLinks = [
+    { label: "home", target: "home" },
+    { label: "services", target: "services" },
+    { label: "about", target: "about" },
+    { label: "work", target: "work" },
+    { label: "contact", target: "contact" },
+  ];
+
   return (
     <>
       {isOpen && (
@@ -134,11 +161,11 @@ export const Navbar = () => {
         role="navigation"
       >
         <div className="flex flex-col gap-y-1">
-          {["home", "services", "about", "work", "contact"].map(
-            (section, index) => (
-              <div key={section} ref={(el) => (linksRef.current[index] = el)}>
-                {/* <Link
-                  className="block
+          {navLinks.map((link, index) => (
+            <div key={link.target} ref={(el) => (linksRef.current[index] = el)}>
+              <a
+                href={`#${link.target}`}
+                className="block
                   text-[9vw] xs:text-[8vw] sm:text-5xl md:text-6xl lg:text-7xl
                   font-light tracking-tight leading-tight
                   transition-all duration-300
@@ -146,19 +173,17 @@ export const Navbar = () => {
                   hover:text-white hover:translate-x-2
                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-sm
                   py-1"
-                  to={section}
-                  smooth
-                  offset={0}
-                  duration={2000}
-                  onClick={toggleMenu}
-                  aria-label={`Navigate to ${section} section`}
-                >
-                  {section}
-                </Link> */}
-                <div className="w-full h-px bg-white/10 mt-1" />
-              </div>
-            ),
-          )}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection(link.target);
+                }}
+                aria-label={`Navigate to ${link.label} section`}
+              >
+                {link.label}
+              </a>
+              <div className="w-full h-px bg-white/10 mt-1" />
+            </div>
+          ))}
         </div>
 
         <div
